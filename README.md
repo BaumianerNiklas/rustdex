@@ -16,4 +16,5 @@ rustdex <pokemon>
 Where `pokemon` is the (national) dex number or name of a Pokémon.
 
 ![](https://cdn.discordapp.com/attachments/872496916078952478/899377543600291870/unknown.png)
+
 Your terminal has to support truecolor in order for the type colors to appear correctly.
