@@ -1,11 +1,12 @@
 mod model;
 mod util;
 
+use colored::Colorize;
 use model::Pokemon;
 use reqwest::blocking as reqwest;
 use std::env;
 use std::process;
-use util::{display_list, normalize_text};
+use util::{display_list, display_stat, get_type_color, normalize_text, print_line};
 
 fn main() {
     let pokemon_arg = env::args().skip(1).next();
@@ -33,29 +34,40 @@ fn main() {
 
             let pokemon = response.json::<Pokemon>().unwrap();
 
-            println!("{} (#{})", normalize_text(&pokemon.name), pokemon.id);
             println!(
-                "Types: {}",
-                display_list(pokemon.types, Box::new(|t| normalize_text(&t.r#type.name)))
+                "{} (#{})",
+                normalize_text(&pokemon.name).underline().bold(),
+                pokemon.id
             );
-            println!(
-                "Weight: {}kg\nHeight: {}m",
-                pokemon.weight / 10.0,
-                pokemon.height / 10.0
+            print_line(
+                "Types",
+                display_list(
+                    pokemon.types,
+                    Box::new(|t| {
+                        let typeref = &t.r#type;
+                        let type_color = get_type_color(&typeref.name);
+
+                        normalize_text(&typeref.name)
+                            .truecolor(type_color.0, type_color.1, type_color.2)
+                            .to_string()
+                    }),
+                ),
             );
-            println!(
-                "Stats: {}",
+            print_line("Weight", format!("{}kg", &pokemon.weight / 10.0));
+            print_line("Height", format!("{}m", &pokemon.height / 10.0));
+            print_line(
+                "Stats",
                 display_list(
                     pokemon.stats,
-                    Box::new(|s| format!("{}: {}", normalize_text(&s.stat.name), &s.base_stat))
-                )
+                    Box::new(|s| format!("{}: {}", display_stat(&s.stat), &s.base_stat)),
+                ),
             );
-            println!(
-                "Abilities: {}",
+            print_line(
+                "Abilities",
                 display_list(
                     pokemon.abilities,
-                    Box::new(|a| normalize_text(&a.ability.name.clone()))
-                )
+                    Box::new(|a| normalize_text(&a.ability.name)),
+                ),
             )
         }
     }

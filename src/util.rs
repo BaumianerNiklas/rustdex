@@ -1,3 +1,10 @@
+use crate::model::StatReference;
+use colored::Colorize;
+
+pub fn print_line(name: &str, data: String) {
+    println!("{}: {}", name.bold(), data)
+}
+
 pub fn normalize_text(text: &str) -> String {
     let lowercase_text = text.to_lowercase();
     let split = lowercase_text.split('-');
@@ -24,6 +31,43 @@ pub fn normalize_text(text: &str) -> String {
 
 pub fn display_list<T>(list: Vec<T>, mapper: Box<dyn FnMut(&T) -> String>) -> String {
     list.iter().map(mapper).collect::<Vec<String>>().join(", ")
+}
+
+pub fn get_type_color(type_name: &str) -> (u8, u8, u8) {
+    match type_name {
+        "normal" => (10, 170, 169),
+        "fire" => (255, 68, 34),
+        "water" => (51, 153, 255),
+        "grass" => (119, 204, 85),
+        "electric" => (244, 195, 48),
+        "ice" => (102, 204, 255),
+        "fighting" => (187, 85, 68),
+        "poison" => (170, 85, 153),
+        "ground" => (214, 181, 82),
+        "flying" => (136, 153, 255),
+        "psychic" => (255, 85, 153),
+        "bug" => (170, 187, 34),
+        "rock" => (187, 170, 102),
+        "ghost" => (102, 102, 187),
+        "dragon" => (119, 102, 238),
+        "dark" => (119, 85, 68),
+        "steel" => (170, 170, 187),
+        "fairy" => (238, 153, 238),
+        _ => (255, 255, 255),
+    }
+}
+
+pub fn display_stat(stat: &StatReference) -> String {
+    match stat.name.as_str() {
+        "hp" => "HP",
+        "attack" => "ATK",
+        "defense" => "DEF",
+        "special-attack" => "Sp.ATK",
+        "special-defense" => "Sp.DEF",
+        "speed" => "SPD",
+        s => panic!("Encounterd unknown stat name: {}", &s),
+    }
+    .to_string()
 }
 
 #[test]
