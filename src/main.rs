@@ -42,7 +42,7 @@ fn main() {
             print_line(
                 "Types",
                 display_list(
-                    pokemon.types,
+                    &pokemon.types,
                     Box::new(|t| {
                         let typeref = &t.r#type;
                         let type_color = get_type_color(&typeref.name);
@@ -58,14 +58,14 @@ fn main() {
             print_line(
                 "Stats",
                 display_list(
-                    pokemon.stats,
+                    &pokemon.stats,
                     Box::new(|s| format!("{}: {}", display_stat(&s.stat), &s.base_stat)),
                 ),
             );
             print_line(
                 "Abilities",
                 display_list(
-                    pokemon.abilities,
+                    &pokemon.abilities,
                     Box::new(|a| normalize_text(&a.ability.name)),
                 ),
             )

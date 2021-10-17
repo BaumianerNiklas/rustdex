@@ -29,7 +29,7 @@ pub fn normalize_text(text: &str) -> String {
     words.join(" ")
 }
 
-pub fn display_list<T>(list: Vec<T>, mapper: Box<dyn FnMut(&T) -> String>) -> String {
+pub fn display_list<T>(list: &Vec<T>, mapper: Box<dyn FnMut(&T) -> String>) -> String {
     list.iter().map(mapper).collect::<Vec<String>>().join(", ")
 }
 
