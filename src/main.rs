@@ -80,7 +80,14 @@ fn main() {
                 "Abilities",
                 display_list(
                     &pokemon.abilities,
-                    Box::new(|a| normalize_text(&a.ability.name)),
+                    Box::new(|a| {
+                        let normalized = normalize_text(&a.ability.name);
+                        if a.is_hidden {
+                            normalized.underline().to_string()
+                        } else {
+                            normalized
+                        }
+                    }),
                 ),
             )
         }
