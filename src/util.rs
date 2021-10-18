@@ -1,4 +1,4 @@
-use crate::model::StatReference;
+use crate::model::pokemon::StatReference;
 use colored::Colorize;
 
 pub fn print_line(name: &str, data: String) {

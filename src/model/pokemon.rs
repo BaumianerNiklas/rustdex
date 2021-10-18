@@ -5,7 +5,7 @@ pub struct Pokemon {
     pub id: u32,
     pub name: String,
     pub height: f32, // In decimetres
-    pub weight: f32, // In hectograms,
+    pub weight: f32, // In hectograms
     pub stats: Vec<Stat>,
     pub abilities: Vec<Ability>,
     pub types: Vec<Type>,
