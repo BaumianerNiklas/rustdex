@@ -4,7 +4,7 @@ Very simple Rust command line app to query [PokéAPI](https://pokeapi.co), made 
 
 ## Installation
 
-1. Install Rust
+1. Install [Rust](https://rustup.rs/)
 2. `cargo install --git https://github.com/BaumianerNiklas/rustdex`
 
 ## Usage
