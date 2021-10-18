@@ -3,7 +3,7 @@ use serde::Deserialize;
 #[derive(Deserialize, Debug)]
 pub struct PokemonSpecies {
     pub generation: GenerationReference,
-    flavor_text_entries: Vec<FlavorTextEntry>,
+    pub flavor_text_entries: Vec<FlavorTextEntry>,
 }
 
 #[derive(Deserialize, Debug)]
