@@ -3,10 +3,13 @@ mod util;
 
 use colored::Colorize;
 use model::pokemon::Pokemon;
+use model::species::PokemonSpecies;
 use reqwest::blocking as reqwest;
 use std::env;
 use std::process;
-use util::{display_list, display_stat, get_type_color, normalize_text, print_line};
+use util::{
+    display_list, display_pokedex_entry, display_stat, get_type_color, normalize_text, print_line,
+};
 
 fn main() {
     let pokemon_arg = env::args().skip(1).next();
@@ -26,7 +29,7 @@ fn main() {
                 process::exit(0);
             } else if !response.status().is_success() {
                 println!(
-                    "Something went wrong while querying PokéApi. (Status {})",
+                    "Something went wrong while querying PokéApi. (Status {}).",
                     response.status()
                 );
                 process::exit(1);
@@ -34,11 +37,23 @@ fn main() {
 
             let pokemon = response.json::<Pokemon>().unwrap();
 
+            let species_url = format!("https://pokeapi.co/api/v2/pokemon-species/{}", pokemon.id);
+            let species_response = client.get(species_url).send().unwrap();
+            if !species_response.status().is_success() {
+                println!(
+                    "Something went wrong while querying PokéApi (Status {}).",
+                    species_response.status()
+                );
+                process::exit(1);
+            }
+            let species = species_response.json::<PokemonSpecies>().unwrap();
+
             println!(
                 "{} (#{})",
                 normalize_text(&pokemon.name).underline().bold(),
                 pokemon.id
             );
+            println!("{}", display_pokedex_entry(species.flavor_text_entries));
             print_line(
                 "Types",
                 display_list(

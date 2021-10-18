@@ -1,4 +1,4 @@
-use crate::model::pokemon::StatReference;
+use crate::model::{pokemon::StatReference, species::FlavorTextEntry};
 use colored::Colorize;
 
 pub fn print_line(name: &str, data: String) {
@@ -31,6 +31,20 @@ pub fn normalize_text(text: &str) -> String {
 
 pub fn display_list<T>(list: &Vec<T>, mapper: Box<dyn FnMut(&T) -> String>) -> String {
     list.iter().map(mapper).collect::<Vec<String>>().join(", ")
+}
+
+pub fn display_pokedex_entry(entries: Vec<FlavorTextEntry>) -> String {
+    let entry = &entries
+        .iter()
+        .filter(|f| f.language.name == String::from("en"))
+        .collect::<Vec<&FlavorTextEntry>>()[0]
+        .flavor_text;
+
+    entry
+        .replace("\n", " ")
+        .replace("\u{000c}", " ")
+        .italic()
+        .to_string()
 }
 
 pub fn get_type_color(type_name: &str) -> (u8, u8, u8) {
