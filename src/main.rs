@@ -2,8 +2,7 @@ mod model;
 mod util;
 
 use colored::Colorize;
-use model::pokemon::Pokemon;
-use model::species::PokemonSpecies;
+use model::{pokemon::Pokemon, species::PokemonSpecies};
 use reqwest::blocking as reqwest;
 use std::env;
 use std::process;
