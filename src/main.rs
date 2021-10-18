@@ -36,8 +36,7 @@ fn main() {
 
             let pokemon = response.json::<Pokemon>().unwrap();
 
-            let species_url = format!("https://pokeapi.co/api/v2/pokemon-species/{}", pokemon.id);
-            let species_response = client.get(species_url).send().unwrap();
+            let species_response = client.get(pokemon.species.url).send().unwrap();
             if !species_response.status().is_success() {
                 println!(
                     "Something went wrong while querying PokéApi (Status {}).",

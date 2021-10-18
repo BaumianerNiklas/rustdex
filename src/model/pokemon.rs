@@ -6,6 +6,7 @@ pub struct Pokemon {
     pub name: String,
     pub height: f32, // In decimetres
     pub weight: f32, // In hectograms
+    pub species: SpeciesReference,
     pub stats: Vec<Stat>,
     pub abilities: Vec<Ability>,
     pub types: Vec<Type>,
@@ -44,6 +45,12 @@ pub struct Type {
 
 #[derive(Deserialize, Debug)]
 pub struct TypeReference {
+    pub name: String,
+    pub url: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct SpeciesReference {
     pub name: String,
     pub url: String,
 }
