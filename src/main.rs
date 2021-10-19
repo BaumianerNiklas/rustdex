@@ -2,16 +2,14 @@ mod model;
 mod util;
 
 use colored::Colorize;
-use model::{pokemon::Pokemon, species::PokemonSpecies};
+use model::{evolution::PokemonEvolution, pokemon::Pokemon, species::PokemonSpecies};
 use reqwest::blocking as reqwest;
 use std::env;
 use std::process;
 use util::{
-    display_list, display_pokedex_entry, display_stat, get_type_color, normalize_text, print_line,
+    display::{display_evolution_chain, display_list, display_pokedex_entry},
+    functions::{get_stat_abbreviation, get_type_color, normalize_text, print_line},
 };
-
-use crate::model::evolution::PokemonEvolution;
-use crate::util::display_evolution_chain;
 
 fn main() {
     let pokemon_arg = env::args().skip(1).next();
@@ -86,7 +84,7 @@ fn main() {
                 "Stats",
                 display_list(
                     &pokemon.stats,
-                    Box::new(|s| format!("{}: {}", display_stat(&s.stat), &s.base_stat)),
+                    Box::new(|s| format!("{}: {}", get_stat_abbreviation(&s.stat), &s.base_stat)),
                 ),
             );
             print_line(
