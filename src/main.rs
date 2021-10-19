@@ -10,6 +10,9 @@ use util::{
     display_list, display_pokedex_entry, display_stat, get_type_color, normalize_text, print_line,
 };
 
+use crate::model::evolution::PokemonEvolution;
+use crate::util::display_evolution_chain;
+
 fn main() {
     let pokemon_arg = env::args().skip(1).next();
     match pokemon_arg {
@@ -46,12 +49,23 @@ fn main() {
             }
             let species = species_response.json::<PokemonSpecies>().unwrap();
 
+            let evolution_response = client.get(species.evolution_chain.url).send().unwrap();
+
+            if !evolution_response.status().is_success() {
+                println!(
+                    "Something went wrong while querying PokéApi (Status {}).",
+                    evolution_response.status()
+                );
+                process::exit(1)
+            }
+            let evolution = evolution_response.json::<PokemonEvolution>().unwrap();
+
             println!(
                 "{} (#{})",
                 normalize_text(&pokemon.name).underline().bold(),
                 pokemon.id
             );
-            println!("{}", display_pokedex_entry(species.flavor_text_entries));
+            println!("{}", display_pokedex_entry(&species.flavor_text_entries));
             print_line(
                 "Types",
                 display_list(
@@ -88,7 +102,12 @@ fn main() {
                         }
                     }),
                 ),
-            )
+            );
+            let evolution_chain = display_evolution_chain(&evolution.chain);
+            match evolution_chain {
+                None => (),
+                Some(evo_chain) => print_line("Evolution Chain", evo_chain),
+            };
         }
     }
 }

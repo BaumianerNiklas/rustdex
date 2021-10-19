@@ -2,13 +2,13 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct PokemonSpecies {
-    pub generation: GenerationReference,
+    pub evolution_chain: EvolutionChainReference,
     pub flavor_text_entries: Vec<FlavorTextEntry>,
+    pub generation: GenerationReference,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct GenerationReference {
-    pub name: String,
+pub struct EvolutionChainReference {
     pub url: String,
 }
 
@@ -20,6 +20,12 @@ pub struct FlavorTextEntry {
 
 #[derive(Deserialize, Debug)]
 pub struct LanguageReference {
+    pub name: String,
+    pub url: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct GenerationReference {
     pub name: String,
     pub url: String,
 }
