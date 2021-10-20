@@ -61,7 +61,7 @@ fn main() {
             println!(
                 "{} (#{})",
                 normalize_text(&pokemon.name).underline().bold(),
-                pokemon.id
+                &species.id
             );
             println!("{}", display_pokedex_entry(&species.flavor_text_entries));
             print_line(

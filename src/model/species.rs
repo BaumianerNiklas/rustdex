@@ -2,6 +2,7 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct PokemonSpecies {
+    pub id: u32,
     pub evolution_chain: EvolutionChainReference,
     pub flavor_text_entries: Vec<FlavorTextEntry>,
     pub generation: GenerationReference,
