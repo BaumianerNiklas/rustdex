@@ -15,14 +15,14 @@ fn main() {
     let pokemon_arg = env::args().skip(1).next();
     let client = reqwest::Client::new();
 
-    let pokemon = match pokemon_arg {
+    let species = match pokemon_arg {
         None => {
             println!("An argument for a Pokémon was not provided.");
             process::exit(0);
         }
         Some(mut argument) => {
             argument = argument.to_lowercase();
-            let url = format!("https://pokeapi.co/api/v2/pokemon/{}", argument);
+            let url = format!("https://pokeapi.co/api/v2/pokemon-species/{}", argument);
             let response = client.get(url).send().unwrap();
 
             if response.status() == 404 {
@@ -36,19 +36,20 @@ fn main() {
                 process::exit(1);
             }
 
-            response.json::<Pokemon>().unwrap()
+            response.json::<PokemonSpecies>().unwrap()
         }
     };
 
-    let species_response = client.get(pokemon.species.url).send().unwrap();
-    if !species_response.status().is_success() {
+    let pokemon_url = format!("https://pokeapi.co/api/v2/pokemon/{}", species.id);
+    let pokemon_response = client.get(pokemon_url).send().unwrap();
+    if !pokemon_response.status().is_success() {
         println!(
             "Something went wrong while querying PokéApi (Status {}).",
-            species_response.status()
+            pokemon_response.status()
         );
         process::exit(1);
     }
-    let species = species_response.json::<PokemonSpecies>().unwrap();
+    let pokemon = pokemon_response.json::<Pokemon>().unwrap();
 
     let evolution_response = client.get(species.evolution_chain.url).send().unwrap();
 
@@ -63,7 +64,7 @@ fn main() {
 
     println!(
         "{} (#{})",
-        normalize_text(&pokemon.name).underline().bold(),
+        normalize_text(&species.name).underline().bold(),
         &species.id
     );
     println!("{}", display_pokedex_entry(&species.flavor_text_entries));
